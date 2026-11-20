@@ -3,10 +3,18 @@ import { COLORS } from '../constants/tasks';
 
 export const appStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
-  appBar: {
+appBar: {
     backgroundColor: COLORS.primaryDark,
-    paddingVertical: 14,
+    paddingVertical: 12,
     paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  appBarLogo: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
   },
   appBarTitle: { color: '#fff', fontSize: 20, fontWeight: '700' },
 

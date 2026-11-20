@@ -3,7 +3,7 @@
 //   npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Alert, Pressable, StatusBar, Text, View } from 'react-native';
+import { Alert, Image, Pressable, StatusBar, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, TABS } from '../constants/tasks';
 import { useTasks } from '../hooks/useTasks';
@@ -15,7 +15,7 @@ import { appStyles as styles } from '../styles/appStyles';
 import { ScreenKey, Task } from '../types/task';
 
 export default function App() {
-  const { tasks, loaded, saveTask, toggleTask, deleteTaskById, resetAllTasks } = useTasks();
+  const { tasks, loaded, saveTask, toggleTask, removeTaskById, clearAllTasks } = useTasks();
   const [screen, setScreen] = useState<ScreenKey>('home');
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -51,22 +51,22 @@ export default function App() {
           text: 'Löschen',
           style: 'destructive',
           onPress: () => {
-            deleteTaskById(task.id);
+            removeTaskById(task.id);
             setEditingId(null);
             setScreen((s) => (s === 'edit' ? 'list' : s));
           },
         },
       ]);
     },
-    [deleteTaskById]
+    [removeTaskById]
   );
 
   const handleResetAll = useCallback(() => {
     Alert.alert('Alles löschen?', 'Alle Pendenzen werden unwiderruflich entfernt.', [
       { text: 'Abbrechen', style: 'cancel' },
-      { text: 'Alles löschen', style: 'destructive', onPress: resetAllTasks },
+      { text: 'Alles löschen', style: 'destructive', onPress: clearAllTasks },
     ]);
-  }, [resetAllTasks]);
+  }, [clearAllTasks]);
 
   const onTabPress = (key: ScreenKey) => {
     if (key === 'edit') {
@@ -113,7 +113,12 @@ export default function App() {
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <StatusBar barStyle="light-content" backgroundColor={COLORS.primaryDark} />
         <View style={styles.appBar}>
-          <Text style={styles.appBarTitle}>Pendenzen</Text>
+          <Image
+            source={require('../bilder/Todoist.jpeg')}
+            style={styles.appBarLogo}
+            resizeMode="cover"
+          />
+          <Text style={styles.appBarTitle}>Daily3</Text>
         </View>
 
         <View style={{ flex: 1 }}>{loaded ? content : null}</View>

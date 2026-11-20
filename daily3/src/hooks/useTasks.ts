@@ -28,7 +28,7 @@ export function useTasks() {
     );
   }, [tasks, loaded]);
 
-  const upsertTask = useCallback((task: Task) => {
+  const saveTask = useCallback((task: Task) => {
     setTasks((prev) => {
       const exists = prev.some((t) => t.id === task.id);
       return exists ? prev.map((t) => (t.id === task.id ? task : t)) : [...prev, task];
@@ -50,7 +50,7 @@ export function useTasks() {
   return {
     tasks,
     loaded,
-    upsertTask,
+    saveTask,
     toggleTask,
     removeTaskById,
     clearAllTasks,
