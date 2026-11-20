@@ -5,14 +5,14 @@ export const APP_VERSION = '1.0.0';
 export const APP_BUILD = '2026-01-2026';
 
 export const COLORS = {
-  primary: '#1dbc62',
-  primaryDark: '#0e6f3a',
-  bg: '#f3f4f6',
+  primary: '#9d6b94',
+  primaryDark: '#6b4665',
+  bg: '#f6f4f6',
   card: '#ffffff',
-  text: '#111827',
-  muted: '#6b7280',
-  border: '#d1d5db',
-  danger: '#dc2626',
+  text: '#1f1b24',
+  muted: '#6e6573',
+  border: '#ded8df',
+  danger: '#dc2615',
   success: '#16a34a',
   warning: '#d97706',
 };

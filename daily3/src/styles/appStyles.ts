@@ -51,6 +51,13 @@ appBar: {
   },
   chipText: { fontSize: 13, color: COLORS.text, fontWeight: '600' },
 
+  todayText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: COLORS.primaryDark,
+    marginBottom: 4,
+  },
+
   label: { fontSize: 14, fontWeight: '700', color: COLORS.text, marginTop: 16, marginBottom: 6 },
   labelSmall: { fontSize: 12, fontWeight: '700', color: COLORS.muted, marginTop: 10 },
   input: {

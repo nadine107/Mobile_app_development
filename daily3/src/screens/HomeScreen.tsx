@@ -6,6 +6,7 @@ import { COLORS } from '../constants/tasks';
 import { appStyles as styles } from '../styles/appStyles';
 import { Task } from '../types/task';
 import { isOverdue, parseDate, prioInfo } from '../utils/taskHelpers';
+import { DailyGoalCard } from '../components/DailyGoalCard';
 
 interface HomeScreenProps {
   tasks: Task[];
@@ -38,10 +39,22 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
       .slice(0, 5);
   }, [tasks]);
 
+  const todayLabel = useMemo(() => {
+    const now = new Date();
+    const weekday = now.toLocaleDateString('de-CH', { weekday: 'long' });
+    const dateStr = now.toLocaleDateString('de-CH', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    return `Heute ist ${weekday}, der ${dateStr}`;
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.screenContent}>
-      <Text style={styles.h1}>Willkommen 👋</Text>
-      <Text style={styles.subtitle}>Dein Überblick über alle Pendenzen</Text>
+      <Text style={styles.h1}>Hallo Nadine 👋</Text>
+      <Text style={styles.todayText}>{todayLabel}</Text>
+      <Text style={styles.subtitle}>Hier hast du all deine Todos auf einen Blick. Heute ist ein super Tag, um produktiv zu sein </Text>
 
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
@@ -56,6 +69,12 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
           <Text style={[styles.statNumber, { color: COLORS.success }]}>{stats.done}</Text>
           <Text style={styles.statLabel}>Erledigt</Text>
         </View>
+      </View>
+
+      <DailyGoalCard doneCount={stats.done} totalCount={stats.total} dailyTarget={3} />
+
+      <View style={styles.statsRow}>
+        {/* deine bestehenden Boxen für Offen / Überfällig / Erledigt */}
       </View>
 
       <Button title="＋ Neue Pendenz erfassen" onPress={onNew} />
