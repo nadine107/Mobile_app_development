@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { Button } from '../components/Button';
 import { TaskRow } from '../components/TaskRow';
 import { COLORS } from '../constants/tasks';
@@ -54,7 +54,7 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
     <ScrollView contentContainerStyle={styles.screenContent}>
       <Text style={styles.h1}>Hallo Nadine 👋</Text>
       <Text style={styles.todayText}>{todayLabel}</Text>
-      <Text style={styles.subtitle}>Hier hast du all deine Todos auf einen Blick. Heute ist ein super Tag, um produktiv zu sein </Text>
+      <Text style={styles.subtitle}>Setze dir jeden Tag drei Habits oder Aufgaben, die du erledigen möchtest. </Text>
 
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
@@ -74,18 +74,22 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
       <DailyGoalCard doneCount={stats.done} totalCount={stats.total} dailyTarget={3} />
 
       <View style={styles.statsRow}>
-        {/* deine bestehenden Boxen für Offen / Überfällig / Erledigt */}
       </View>
-
-      <Button title="＋ Neue Pendenz erfassen" onPress={onNew} />
 
       <Text style={styles.h2}>Als Nächstes</Text>
       {upcoming.length === 0 ? (
         <View style={styles.emptyBox}>
+          {stats.total > 0 && (
+            <Image
+              source={require('../bilder/Minions.gif')}
+              style={styles.emptyImage}
+              resizeMode="contain"
+            />
+          )}
           <Text style={styles.emptyText}>
             {stats.total === 0
-              ? 'Noch keine Pendenzen erfasst. Leg gleich los!'
-              : 'Alles erledigt – gut gemacht! 🎉'}
+              ? 'Noch keine Aufgabe erfasst. Erstelle eine neue'
+              : 'Alles geschafft :) Heute stehen keine Todos mehr an'}
           </Text>
         </View>
       ) : (
@@ -94,9 +98,7 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
         ))
       )}
 
-      {stats.total > 0 && (
-        <Button title="Alle Pendenzen anzeigen" variant="secondary" onPress={onShowAll} style={{ marginTop: 12 }} />
-      )}
+      
     </ScrollView>
   );
 }

@@ -88,6 +88,12 @@ appBar: {
 
   emptyBox: { padding: 24, alignItems: 'center' },
   emptyText: { color: COLORS.muted, fontSize: 14, textAlign: 'center' },
+  emptyImage: {
+    width: 120,
+    height: 120,
+    marginBottom: 10,
+    borderRadius: 16,
+  },
 
   listHeader: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8 },
 
@@ -126,14 +132,39 @@ appBar: {
   versionKey: { color: COLORS.muted, fontSize: 14 },
   versionVal: { color: COLORS.text, fontSize: 14, fontWeight: '600' },
 
+  fabButton: {
+    position: 'absolute',
+    right: 18,
+    bottom: 72,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.card,
+  },
+  fabText: {
+    color: '#f5b7ef',
+    fontSize: 28,
+    fontWeight: '700',
+    lineHeight: 30,
+  },
+
+  fabImage: {
+    width: 26,
+    height: 26,
+  },
+
   tabBar: {
     flexDirection: 'row',
     backgroundColor: COLORS.card,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: COLORS.border,
   },
-  tabItem: { flex: 1, alignItems: 'center', paddingVertical: 8 },
+  tabItem: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 8 },
   tabIcon: { fontSize: 20 },
-  tabLabel: { fontSize: 11, color: COLORS.muted, marginTop: 2 },
+  tabLabel: { fontSize: 17, color: COLORS.muted, fontWeight: '600' },
   tabLabelActive: { color: COLORS.primary, fontWeight: '700' },
 });

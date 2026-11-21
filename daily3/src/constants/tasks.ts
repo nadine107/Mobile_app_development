@@ -37,8 +37,7 @@ export const FILTER_OPTIONS: { key: FilterKey; label: string }[] = [
 ];
 
 export const TABS: TabItemConfig[] = [
-  { key: 'home', label: 'Übersicht', icon: '🏠' },
-  { key: 'edit', label: 'Neu', icon: '✏️' },
-  { key: 'list', label: 'Alle', icon: '📋' },
-  { key: 'help', label: 'Hilfe', icon: '❓' },
+  { key: 'home', label: 'Übersicht', icon: '' },
+  { key: 'list', label: 'Alle', icon: '' },
+  { key: 'help', label: 'Einstellungen', icon: '' },
 ];

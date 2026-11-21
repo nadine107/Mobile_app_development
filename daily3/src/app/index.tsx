@@ -45,7 +45,7 @@ export default function App() {
 
   const handleDelete = useCallback(
     (task: Task) => {
-      Alert.alert('Pendenz löschen?', `„${task.title}“ wird endgültig entfernt.`, [
+      Alert.alert('Aufgabe löschen?', `„${task.title}“ wird endgültig entfernt.`, [
         { text: 'Abbrechen', style: 'cancel' },
         {
           text: 'Löschen',
@@ -123,12 +123,23 @@ export default function App() {
 
         <View style={{ flex: 1 }}>{loaded ? content : null}</View>
 
+        <Pressable
+          style={({ pressed }) => [styles.fabButton, { opacity: pressed ? 0.85 : 1 }]}
+          onPress={goNew}
+          >
+          <Image
+            source={require('../../src/bilder/Plussymbol.jpeg')}
+            style={styles.fabImage}
+            resizeMode="contain"
+          />
+          
+        </Pressable>
+
         <View style={styles.tabBar}>
           {TABS.map((tab) => {
             const active = screen === tab.key;
             return (
-              <Pressable key={tab.key} style={styles.tabItem} onPress={() => onTabPress(tab.key)}>
-                <Text style={styles.tabIcon}>{tab.icon}</Text>
+              <Pressable key={tab.key} style={styles.tabItem} onPress={() => setScreen(tab.key)}>
                 <Text style={[styles.tabLabel, active && styles.tabLabelActive]}>{tab.label}</Text>
               </Pressable>
             );
