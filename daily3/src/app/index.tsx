@@ -123,6 +123,7 @@ export default function App() {
 
         <View style={{ flex: 1 }}>{loaded ? content : null}</View>
 
+        {screen != 'edit' && (
         <Pressable
           style={({ pressed }) => [styles.fabButton, { opacity: pressed ? 0.85 : 1 }]}
           onPress={goNew}
@@ -132,8 +133,8 @@ export default function App() {
             style={styles.fabImage}
             resizeMode="contain"
           />
-          
         </Pressable>
+        )}
 
         <View style={styles.tabBar}>
           {TABS.map((tab) => {
