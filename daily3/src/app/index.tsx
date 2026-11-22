@@ -1,6 +1,10 @@
 // Aufgaben-App für Expo Go (TypeScript)
 // Benötigte Pakete:
-//   npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
+// npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
+// wichtiger Hinweis zum Starten der App: Beim Öffnen befindet man sich ziemlich sicher im Ordner "Mobile_app_development"
+// Man muss von diesem Ordner in den Ordner "daily3" mithilfe des Befehls "cd daily3" wechseln. 
+// Dann kann man wie gewohnt "npx expo start" ausführen
+// Viel Spass bei der App :) 
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { Alert, Image, Pressable, StatusBar, Text, View } from 'react-native';
