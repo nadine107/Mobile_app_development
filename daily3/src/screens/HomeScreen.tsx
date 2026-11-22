@@ -7,22 +7,36 @@ import { appStyles as styles } from '../styles/appStyles';
 import { Task } from '../types/task';
 import { isOverdue, isTaskForToday, parseDate, prioInfo } from '../utils/taskHelpers';
 
+
 interface HomeScreenProps {
   tasks: Task[];
-  onNew: () => void;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
   onDelete: (task: Task) => void;
-  onShowAll: () => void;
+}
+
+
+function compareByDueDate(a: Task, b: Task): number {
+  const da = parseDate(a.due);
+  const db = parseDate(b.due);
+  if (!da && !db) return 0;
+  if (!da) return 1;
+  if (!db) return -1;
+  return da.getTime() - db.getTime();
 }
 
 export function HomeScreen({ tasks, onOpen, onToggle, onDelete }: HomeScreenProps) {
   const todayTasks = useMemo(() => tasks.filter((t) => isTaskForToday(t)), [tasks]);
 
+
   const stats = useMemo(() => {
+    let done = 0;
+    let overdue = 0;
+    for (const t of todayTasks) {
+      if (t.done) done += 1;
+      if (isOverdue(t)) overdue += 1;
+    }
     const total = todayTasks.length;
-    const done = todayTasks.filter((t) => t.done).length;
-    const overdue = todayTasks.filter(isOverdue).length;
     return { total, done, open: total - done, overdue };
   }, [todayTasks]);
 
@@ -30,11 +44,8 @@ export function HomeScreen({ tasks, onOpen, onToggle, onDelete }: HomeScreenProp
     return todayTasks
       .filter((t) => !t.done)
       .sort((a, b) => {
-        const da = parseDate(a.due);
-        const db = parseDate(b.due);
-        if (da && db) return da.getTime() - db.getTime();
-        if (da) return -1;
-        if (db) return 1;
+        const dueDiff = compareByDueDate(a, b);
+        if (dueDiff !== 0) return dueDiff;
         return prioInfo(a.priority).weight - prioInfo(b.priority).weight;
       })
       .slice(0, 5);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEY } from '../constants/tasks';
@@ -7,9 +7,19 @@ import { getTodayString } from '../utils/taskHelpers';
 
 const LAST_RESET_KEY = 'daily3_last_reset_date';
 
+
+function applyCompletionDate(task: Task, done: boolean, todayStr: string): Task {
+  return {
+    ...task,
+    done,
+    completedDate: done ? (task.completedDate ?? todayStr) : undefined,
+  };
+}
+
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const skipNextSave = useRef(false);
 
   useEffect(() => {
     (async () => {
@@ -24,14 +34,16 @@ export function useTasks() {
 
         // Neuer Tag erkannt -> wiederkehrende Aufgaben wieder auf "Offen" setzen
         if (lastReset !== todayStr) {
-          parsed = parsed.map((t) => {
-            if ((t.repeatDays?.length ?? 0) > 0) {
-              return { ...t, done: false, completedDate: undefined };
-            }
-            return t;
-          });
-          await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-          await AsyncStorage.setItem(LAST_RESET_KEY, todayStr);
+          parsed = parsed.map((t) =>
+            (t.repeatDays?.length ?? 0) > 0
+              ? { ...t, done: false, completedDate: undefined }
+              : t
+          );
+          skipNextSave.current = true;
+          await Promise.all([
+            AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)),
+            AsyncStorage.setItem(LAST_RESET_KEY, todayStr),
+          ]);
         }
 
         setTasks(parsed);
@@ -45,6 +57,10 @@ export function useTasks() {
 
   useEffect(() => {
     if (!loaded) return;
+    if (skipNextSave.current) {
+      skipNextSave.current = false;
+      return;
+    }
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)).catch(() =>
       Alert.alert('Fehler', 'Aufgaben konnten nicht gespeichert werden.')
     );
@@ -52,10 +68,7 @@ export function useTasks() {
 
   const saveTask = useCallback((task: Task) => {
     const todayStr = getTodayString();
-    const normalizedTask: Task = {
-      ...task,
-      completedDate: task.done ? (task.completedDate ?? todayStr) : undefined,
-    };
+    const normalizedTask = applyCompletionDate(task, task.done, todayStr);
 
     setTasks((prev) => {
       const exists = prev.some((t) => t.id === normalizedTask.id);
@@ -68,15 +81,7 @@ export function useTasks() {
   const toggleTask = useCallback((id: string) => {
     const todayStr = getTodayString();
     setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id !== id) return t;
-        const nextDone = !t.done;
-        return {
-          ...t,
-          done: nextDone,
-          completedDate: nextDone ? todayStr : undefined,
-        };
-      })
+      prev.map((t) => (t.id === id ? applyCompletionDate({ ...t, completedDate: t.done ? undefined : todayStr }, !t.done, todayStr) : t))
     );
   }, []);
 

@@ -3,7 +3,8 @@ import { COLORS } from '../constants/tasks';
 
 export const appStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
-appBar: {
+  // KORRIGIERT: Einrückung von appBar vereinheitlicht
+  appBar: {
     backgroundColor: COLORS.primaryDark,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -145,12 +146,7 @@ appBar: {
     borderWidth: 3,
     borderColor: COLORS.card,
   },
-  fabText: {
-    color: '#f5b7ef',
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 30,
-  },
+  // KORRIGIERT: Ungenutzten Style fabText entfernt
 
   fabImage: {
     width: 30,
@@ -164,44 +160,11 @@ appBar: {
     borderTopColor: COLORS.border,
   },
   tabItem: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 8 },
-  tabIcon: { fontSize: 20 },
+  // KORRIGIERT: Ungenutzten Style tabIcon entfernt
   tabLabel: { fontSize: 17, color: COLORS.muted, fontWeight: '600' },
   tabLabelActive: { color: COLORS.primary, fontWeight: '700' },
 
-  repeatHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 14,
-    marginBottom: 8,
-  },
-  stepperRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  stepperButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
-    backgroundColor: COLORS.card,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperButtonText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: COLORS.text,
-  },
-  stepperValue: {
-    minWidth: 42,
-    textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '700',
-    color: COLORS.text,
-  },
+  // KORRIGIERT: Ungenutzte Stepper-Styles (repeatHeaderRow, stepperRow, stepperButton, stepperButtonText, stepperValue) entfernt
   weekdayRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',

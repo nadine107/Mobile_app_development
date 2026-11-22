@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, Text, TextInput, View } from 'react-native';
 import { Chip } from '../components/Chip';
 import { TaskRow } from '../components/TaskRow';
@@ -22,15 +22,15 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
 
   const data = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let list = tasks.filter((t) => {
+    const filtered = tasks.filter((t) => {
       if (filter === 'open' && t.done) return false;
       if (filter === 'done' && !t.done) return false;
-      if (q && !(`${t.title} ${t.description}`.toLowerCase().includes(q))) return false;
+      if (q && !`${t.title} ${t.description}`.toLowerCase().includes(q)) return false;
       return true;
     });
 
     const dir = ascending ? 1 : -1;
-    list = [...list].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       let r = 0;
       switch (sortKey) {
         case 'due': {
@@ -54,16 +54,24 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
       }
       return r * dir;
     });
-    return list;
   }, [tasks, sortKey, ascending, filter, query]);
 
   const onSortPress = (key: SortKey) => {
-    if (key === sortKey) setAscending((a) => !a);
-    else {
+    if (key === sortKey) {
+      setAscending((a) => !a);
+    } else {
       setSortKey(key);
       setAscending(true);
     }
   };
+
+  
+  const renderItem = useCallback(
+    ({ item }: { item: Task }) => (
+      <TaskRow task={item} onOpen={onOpen} onToggle={onToggle} onDelete={onDelete} />
+    ),
+    [onOpen, onToggle, onDelete]
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -90,7 +98,12 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
         <Text style={styles.labelSmall}>Anzeigen</Text>
         <View style={styles.chipRow}>
           {FILTER_OPTIONS.map((o) => (
-            <Chip key={o.key} label={o.label} active={filter === o.key} onPress={() => setFilter(o.key)} />
+            <Chip
+              key={o.key}
+              label={o.label}
+              active={filter === o.key}
+              onPress={() => setFilter(o.key)}
+            />
           ))}
         </View>
         <Text style={styles.hint}>
@@ -102,9 +115,7 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
         data={data}
         keyExtractor={(t) => t.id}
         contentContainerStyle={{ padding: 16, paddingTop: 4 }}
-        renderItem={({ item }) => (
-          <TaskRow task={item} onOpen={onOpen} onToggle={onToggle} onDelete={onDelete} />
-        )}
+        renderItem={renderItem}
         ListEmptyComponent={
           <View style={styles.emptyBox}>
             <Text style={styles.emptyText}>Keine Aufgaben gefunden.</Text>

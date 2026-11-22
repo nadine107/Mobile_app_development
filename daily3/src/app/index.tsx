@@ -2,9 +2,9 @@
 // Benötigte Pakete:
 // npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
 // wichtiger Hinweis zum Starten der App: Beim Öffnen befindet man sich ziemlich sicher im Ordner "Mobile_app_development"
-// Man muss von diesem Ordner in den Ordner "daily3" mithilfe des Befehls "cd daily3" wechseln. 
+// Man muss von diesem Ordner in den Ordner "daily3" mithilfe des Befehls "cd daily3" wechseln.
 // Dann kann man wie gewohnt "npx expo start" ausführen
-// Viel Spass bei der App :) 
+// Viel Spass bei der App :)
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { Alert, Image, Pressable, StatusBar, Text, View } from 'react-native';
@@ -24,7 +24,7 @@ export default function App() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const editingTask = useMemo(
-    () => tasks.find((t) => t.id === editingId) || null,
+    () => tasks.find((t) => t.id === editingId) ?? null,
     [tasks, editingId]
   );
 
@@ -72,24 +72,16 @@ export default function App() {
     ]);
   }, [clearAllTasks]);
 
-  const onTabPress = (key: ScreenKey) => {
-    if (key === 'edit') {
-      goNew();
-    } else {
-      setScreen(key);
-    }
-  };
+  
 
   let content = null;
   if (screen === 'home') {
     content = (
       <HomeScreen
         tasks={tasks}
-        onNew={goNew}
         onOpen={goEdit}
         onToggle={toggleTask}
         onDelete={handleDelete}
-        onShowAll={() => setScreen('list')}
       />
     );
   } else if (screen === 'edit') {
@@ -127,17 +119,18 @@ export default function App() {
 
         <View style={{ flex: 1 }}>{loaded ? content : null}</View>
 
-        {screen != 'edit' && (
-        <Pressable
-          style={({ pressed }) => [styles.fabButton, { opacity: pressed ? 0.85 : 1 }]}
-          onPress={goNew}
+        
+        {screen !== 'edit' && (
+          <Pressable
+            style={({ pressed }) => [styles.fabButton, { opacity: pressed ? 0.85 : 1 }]}
+            onPress={goNew}
           >
-          <Image
-            source={require('../../src/bilder/Plussymbol.png')}
-            style={styles.fabImage}
-            resizeMode="contain"
-          />
-        </Pressable>
+            <Image
+              source={require('../bilder/Plussymbol.png')}
+              style={styles.fabImage}
+              resizeMode="contain"
+            />
+          </Pressable>
         )}
 
         <View style={styles.tabBar}>

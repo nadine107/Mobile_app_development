@@ -32,6 +32,7 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
   const [repeatDays, setRepeatDays] = useState<WeekdayKey[]>(task?.repeatDays ?? []);
   const [errors, setErrors] = useState<{ title?: string; due?: string }>({});
 
+  
   useEffect(() => {
     setTitle(task?.title ?? '');
     setDescription(task?.description ?? '');
@@ -40,11 +41,12 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
     setDone(task?.done ?? false);
     setRepeatDays(task?.repeatDays ?? []);
     setErrors({});
-  }, [task?.id]);
+  }, [task]);
 
   const validate = () => {
     const e: { title?: string; due?: string } = {};
     const trimmedTitle = title.trim();
+    const trimmedDue = due.trim();
 
     if (!trimmedTitle) {
       e.title = 'Bitte einen Titel eingeben.';
@@ -59,18 +61,24 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
       }
     }
 
-    if (due.trim() && !parseDate(due)) e.due = 'Ungültiges Datum – Format: TT.MM.JJJJ';
+    if (trimmedDue && !parseDate(trimmedDue)) {
+      e.due = 'Ungültiges Datum – Format: TT.MM.JJJJ';
+    }
+
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const handleSave = () => {
     if (!validate()) return;
-    const parsed = parseDate(due);
-    const normalizedDue = due.trim() && parsed ? formatDate(parsed) : '';
+    const trimmedTitle = title.trim();
+    const trimmedDue = due.trim();
+    const parsed = trimmedDue ? parseDate(trimmedDue) : null;
+    const normalizedDue = parsed ? formatDate(parsed) : '';
+
     onSave({
       id: task?.id ?? newId(),
-      title: title.trim(),
+      title: trimmedTitle,
       description: description.trim(),
       priority,
       due: normalizedDue,
@@ -105,7 +113,10 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
         <TextInput
           style={[styles.input, errors.title && styles.inputError]}
           value={title}
-          onChangeText={setTitle}
+          onChangeText={(text) => {
+            setTitle(text);
+            if (errors.title) setErrors((e) => ({ ...e, title: undefined }));
+          }}
           placeholder="Was ist zu tun?"
           maxLength={100}
         />
@@ -139,7 +150,10 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
         <TextInput
           style={[styles.input, errors.due && styles.inputError]}
           value={due}
-          onChangeText={setDue}
+          onChangeText={(text) => {
+            setDue(text);
+            if (errors.due) setErrors((e) => ({ ...e, due: undefined }));
+          }}
           placeholder="TT.MM.JJJJ"
           keyboardType="numbers-and-punctuation"
           maxLength={10}
@@ -152,8 +166,9 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
           <Chip label="Kein Datum" onPress={() => setDue('')} />
         </View>
 
-        {/* Wochentage */}
-        <Text style={styles.label}>Wochentage (bei Aufgaben, die an mehreren Tagen vorkommen sollen)</Text>
+        <Text style={styles.label}>
+          Wochentage (bei Aufgaben, die an mehreren Tagen vorkommen sollen)
+        </Text>
         <View style={styles.weekdayRow}>
           {WEEKDAYS.map((day) => {
             const selected = repeatDays.includes(day);

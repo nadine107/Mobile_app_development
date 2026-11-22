@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Platform, ScrollView, Text, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from '../components/Button';
@@ -12,12 +12,15 @@ interface HelpScreenProps {
 
 export function HelpScreen({ taskCount, onResetAll }: HelpScreenProps) {
   const expoVersion = Constants.expoConfig?.sdkVersion ?? 'unbekannt';
-  const rows: [string, string][] = [
-    ['App-Version', APP_VERSION],
-    ['Expo SDK', String(expoVersion)],
-    ['Plattform', `${Platform.OS} ${Platform.Version}`],
-    ['Gespeicherte Aufgaben', String(taskCount)],
-  ];
+  const rows: [string, string][] = useMemo(
+    () => [
+      ['App-Version', APP_VERSION],
+      ['Expo SDK', String(expoVersion)],
+      ['Plattform', `${Platform.OS} ${Platform.Version}`],
+      ['Gespeicherte Aufgaben', String(taskCount)],
+    ],
+    [expoVersion, taskCount]
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.screenContent}>
@@ -26,8 +29,9 @@ export function HelpScreen({ taskCount, onResetAll }: HelpScreenProps) {
       <View style={styles.card}>
         <Text style={styles.h3}>Aufgabe erfassen</Text>
         <Text style={styles.p}>
-          Über „Neu“ oder den Button auf der Übersicht öffnest du die Eingabemaske. Der Titel ist
-          Pflicht, das Fälligkeitsdatum wird im Format TT.MM.JJJJ eingegeben.
+          Über den „+“-Button öffnest du die Eingabemaske. Der Titel ist Pflicht (mit Buchstaben),
+          das Fälligkeitsdatum wird im Format TT.MM.JJJJ eingegeben und optional kannst du
+          Wochentage für wiederkehrende Aufgaben wählen.
         </Text>
       </View>
 
@@ -40,18 +44,19 @@ export function HelpScreen({ taskCount, onResetAll }: HelpScreenProps) {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.h3}>Erledigen</Text>
+        <Text style={styles.h3}>Erledigen & Tagesziel</Text>
         <Text style={styles.p}>
           Das Kästchen links neben einer Aufgabe markiert sie als erledigt bzw. wieder als offen.
+          Wiederkehrende Aufgaben werden an einem neuen Tag automatisch wieder auf offen gesetzt.
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.h3}>Sortieren & Filtern</Text>
+        <Text style={styles.h3}>Sortieren & Suchen</Text>
         <Text style={styles.p}>
           In „Alle“ kannst du nach Fälligkeit, Priorität, Titel oder Erfassungsdatum sortieren.
-          Erneutes Tippen auf dieselbe Sortierung kehrt die Reihenfolge um. Zusätzlich gibt es
-          Suche und Statusfilter.
+          Erneutes Tippen auf dieselbe Sortierung kehrt die Reihenfolge um. Zusätzlich steht oben
+          eine Suchfunktion zur Verfügung.
         </Text>
       </View>
 
