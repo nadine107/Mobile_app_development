@@ -117,6 +117,10 @@ Bietet eine Übersicht über die Bedienung der App, technische Versionsinformati
 * Die Datenhaltung erfolgt rein lokal auf dem Gerät über `AsyncStorage`; es gibt aktuell keine Cloud-Synchronisation oder Benutzerkonten.
 * Das Tagesdatum und der tägliche Reset orientieren sich an der lokalen Gerätezeit.
 * Es werden aktuell keine Push-Benachrichtigungen oder Erinnerungen versendet.
+* Es gibt keine Timer- oder Stoppuhrfunktion
+* Es bietet sich keine Funktion mit anderen in Kontakt zu treten und sich z.B. über Fortschritt auszutauschen. Zudem lassen sich auch keine Daten austauschen. 
+
+---
 
 ---
 
