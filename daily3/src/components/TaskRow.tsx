@@ -1,4 +1,4 @@
-import React from 'react';
+import {ReactNode} from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { COLORS, WEEKDAYS } from '../constants/tasks';
 import { appStyles as styles } from '../styles/appStyles';
