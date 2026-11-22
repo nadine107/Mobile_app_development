@@ -68,7 +68,7 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.listHeader}>
-        <Text style={styles.h1}>Alle Pendenzen</Text>
+        <Text style={styles.h1}>Alle Aufgaben</Text>
         <TextInput
           style={styles.input}
           value={query}
@@ -107,7 +107,7 @@ export function ListScreen({ tasks, onOpen, onToggle, onDelete }: ListScreenProp
         )}
         ListEmptyComponent={
           <View style={styles.emptyBox}>
-            <Text style={styles.emptyText}>Keine Pendenzen gefunden.</Text>
+            <Text style={styles.emptyText}>Keine Aufgaben gefunden.</Text>
           </View>
         }
       />

@@ -1,4 +1,4 @@
-// Pendenzen-App für Expo Go (TypeScript)
+// Aufgaben-App für Expo Go (TypeScript)
 // Benötigte Pakete:
 //   npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
 
@@ -62,7 +62,7 @@ export default function App() {
   );
 
   const handleResetAll = useCallback(() => {
-    Alert.alert('Alles löschen?', 'Alle Pendenzen werden unwiderruflich entfernt.', [
+    Alert.alert('Alles löschen?', 'Alle Aufgaben werden unwiderruflich entfernt.', [
       { text: 'Abbrechen', style: 'cancel' },
       { text: 'Alles löschen', style: 'destructive', onPress: clearAllTasks },
     ]);

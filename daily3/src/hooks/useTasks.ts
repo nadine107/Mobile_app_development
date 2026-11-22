@@ -36,7 +36,7 @@ export function useTasks() {
 
         setTasks(parsed);
       } catch {
-        Alert.alert('Fehler', 'Pendenzen konnten nicht geladen werden.');
+        Alert.alert('Fehler', 'Aufgaben konnten nicht geladen werden.');
       } finally {
         setLoaded(true);
       }
@@ -46,7 +46,7 @@ export function useTasks() {
   useEffect(() => {
     if (!loaded) return;
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)).catch(() =>
-      Alert.alert('Fehler', 'Pendenzen konnten nicht gespeichert werden.')
+      Alert.alert('Fehler', 'Aufgaben konnten nicht gespeichert werden.')
     );
   }, [tasks, loaded]);
 

@@ -2,7 +2,7 @@ import { FilterKey, PriorityConfig, SortKey, TabItemConfig } from '../types/task
 
 export const STORAGE_KEY = 'pendenzen.v1';
 export const APP_VERSION = '1.0.0';
-export const APP_BUILD = '2026-01-2026';
+
 
 export const COLORS = {
   primary: '#9d6b94',

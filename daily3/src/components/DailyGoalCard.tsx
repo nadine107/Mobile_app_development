@@ -19,7 +19,7 @@ export function DailyGoalCard({ doneCount, totalCount, dailyTarget = 3 }: DailyG
       ? 'Tagesziel erreicht - super'
       : doneCount > 0
       ? 'Du bist auf einem guten Weg.'
-      : 'Starte mit deiner ersten Pendenz.';
+      : 'Starte mit deiner ersten Aufgabe.';
 
   return (
     <View style={styles.goalCard}>

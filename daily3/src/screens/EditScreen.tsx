@@ -44,7 +44,21 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
 
   const validate = () => {
     const e: { title?: string; due?: string } = {};
-    if (!title.trim()) e.title = 'Bitte einen Titel eingeben.';
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) {
+      e.title = 'Bitte einen Titel eingeben.';
+    } else if (!/[a-zA-ZäöüÄÖÜß]{2,}/.test(trimmedTitle)) {
+      e.title = 'Der Titel muss mindestens ein Wort mit Buchstaben enthalten.';
+    } else if (!/^[a-zA-ZäöüÄÖÜß0-9\s.,!?\-():/]+$/.test(trimmedTitle)) {
+      e.title = 'Bitte keine unzulässigen Sonderzeichen verwenden.';
+    } else {
+      const letterCount = (trimmedTitle.match(/[a-zA-ZäöüÄÖÜß]/g) ?? []).length;
+      if (letterCount < trimmedTitle.replace(/\s/g, '').length / 2) {
+        e.title = 'Der Titel sollte hauptsächlich aus Buchstaben bestehen.';
+      }
+    }
+
     if (due.trim() && !parseDate(due)) e.due = 'Ungültiges Datum – Format: TT.MM.JJJJ';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -139,7 +153,7 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
         </View>
 
         {/* Wochentage */}
-        <Text style={styles.label}>Wochentage</Text>
+        <Text style={styles.label}>Wochentage (bei Aufgaben, die an mehreren Tagen vorkommen sollen)</Text>
         <View style={styles.weekdayRow}>
           {WEEKDAYS.map((day) => {
             const selected = repeatDays.includes(day);
@@ -166,7 +180,7 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
         <Button title="Abbrechen" variant="secondary" onPress={onCancel} style={{ marginTop: 10 }} />
         {!isNew && (
           <Button
-            title="Pendenz löschen"
+            title="Aufgabe löschen"
             variant="danger"
             onPress={() => onDelete(task)}
             style={{ marginTop: 10 }}
