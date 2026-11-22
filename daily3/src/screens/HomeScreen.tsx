@@ -90,6 +90,11 @@ export function HomeScreen({ tasks, onOpen, onToggle, onDelete }: HomeScreenProp
       <Text style={styles.h2}>Als Nächstes</Text>
       {upcoming.length === 0 ? (
         <View style={styles.emptyBox}>
+          <Text style={styles.emptyText}>
+            {stats.total === 0
+              ? 'Noch keine Aufgabe erfasst. Erstelle eine neue'
+              : 'Alles geschafft :) Heute stehen keine Todos mehr an'}
+          </Text>
           {stats.total > 0 && (
             <Image
               source={require('../bilder/Minions.gif')}
@@ -97,11 +102,6 @@ export function HomeScreen({ tasks, onOpen, onToggle, onDelete }: HomeScreenProp
               resizeMode="contain"
             />
           )}
-          <Text style={styles.emptyText}>
-            {stats.total === 0
-              ? 'Noch keine Aufgabe erfasst. Erstelle eine neue'
-              : 'Alles geschafft :) Heute stehen keine Todos mehr an'}
-          </Text>
         </View>
       ) : (
         upcoming.map((t) => (
