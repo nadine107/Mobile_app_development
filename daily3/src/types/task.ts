@@ -1,21 +1,18 @@
-// ---------------------------------------------------------------------------
 // TypeScript Interfaces & Typen
-// ---------------------------------------------------------------------------
 
 export type PriorityKey = 'hoch' | 'mittel' | 'tief';
-
 export type WeekdayKey = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So';
 
 export interface Task {
   id: string;
   title: string;
   description: string;
-  priority: Priority;
-  dueDate: string | null;
+  priority: PriorityKey;
+  due: string;
   done: boolean;
-  createdAt: string;
-  repeatPerWeek?: number;      // z. B. 0 (einmalig) oder 1..7
-  repeatDays?: WeekdayKey[];   // z. B. ['Mo', 'Mi', 'Fr']
+  createdAt: number;
+  repeatDays?: WeekdayKey[];
+  completedDate?: string; // z. B. '22.11.2026' – wann die Aufgabe erledigt wurde
 }
 
 export interface PriorityConfig {

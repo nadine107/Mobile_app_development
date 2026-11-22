@@ -3,6 +3,9 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEY } from '../constants/tasks';
 import { Task } from '../types/task';
+import { getTodayString } from '../utils/taskHelpers';
+
+const LAST_RESET_KEY = 'daily3_last_reset_date';
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -11,8 +14,27 @@ export function useTasks() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (raw) setTasks(JSON.parse(raw));
+        const todayStr = getTodayString();
+        const [raw, lastReset] = await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEY),
+          AsyncStorage.getItem(LAST_RESET_KEY),
+        ]);
+
+        let parsed: Task[] = raw ? JSON.parse(raw) : [];
+
+        // Neuer Tag erkannt -> wiederkehrende Aufgaben wieder auf "Offen" setzen
+        if (lastReset !== todayStr) {
+          parsed = parsed.map((t) => {
+            if ((t.repeatDays?.length ?? 0) > 0) {
+              return { ...t, done: false, completedDate: undefined };
+            }
+            return t;
+          });
+          await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+          await AsyncStorage.setItem(LAST_RESET_KEY, todayStr);
+        }
+
+        setTasks(parsed);
       } catch {
         Alert.alert('Fehler', 'Pendenzen konnten nicht geladen werden.');
       } finally {
@@ -29,14 +51,33 @@ export function useTasks() {
   }, [tasks, loaded]);
 
   const saveTask = useCallback((task: Task) => {
+    const todayStr = getTodayString();
+    const normalizedTask: Task = {
+      ...task,
+      completedDate: task.done ? (task.completedDate ?? todayStr) : undefined,
+    };
+
     setTasks((prev) => {
-      const exists = prev.some((t) => t.id === task.id);
-      return exists ? prev.map((t) => (t.id === task.id ? task : t)) : [...prev, task];
+      const exists = prev.some((t) => t.id === normalizedTask.id);
+      return exists
+        ? prev.map((t) => (t.id === normalizedTask.id ? normalizedTask : t))
+        : [...prev, normalizedTask];
     });
   }, []);
 
   const toggleTask = useCallback((id: string) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
+    const todayStr = getTodayString();
+    setTasks((prev) =>
+      prev.map((t) => {
+        if (t.id !== id) return t;
+        const nextDone = !t.done;
+        return {
+          ...t,
+          done: nextDone,
+          completedDate: nextDone ? todayStr : undefined,
+        };
+      })
+    );
   }, []);
 
   const removeTaskById = useCallback((id: string) => {

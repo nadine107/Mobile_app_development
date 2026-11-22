@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { Button } from '../components/Button';
+import { DailyGoalCard } from '../components/DailyGoalCard';
 import { TaskRow } from '../components/TaskRow';
 import { COLORS } from '../constants/tasks';
 import { appStyles as styles } from '../styles/appStyles';
 import { Task } from '../types/task';
-import { isOverdue, parseDate, prioInfo } from '../utils/taskHelpers';
-import { DailyGoalCard } from '../components/DailyGoalCard';
+import { isOverdue, isTaskForToday, parseDate, prioInfo } from '../utils/taskHelpers';
 
 interface HomeScreenProps {
   tasks: Task[];
@@ -17,16 +16,18 @@ interface HomeScreenProps {
   onShowAll: () => void;
 }
 
-export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll }: HomeScreenProps) {
+export function HomeScreen({ tasks, onOpen, onToggle, onDelete }: HomeScreenProps) {
+  const todayTasks = useMemo(() => tasks.filter((t) => isTaskForToday(t)), [tasks]);
+
   const stats = useMemo(() => {
-    const total = tasks.length;
-    const done = tasks.filter((t) => t.done).length;
-    const overdue = tasks.filter(isOverdue).length;
+    const total = todayTasks.length;
+    const done = todayTasks.filter((t) => t.done).length;
+    const overdue = todayTasks.filter(isOverdue).length;
     return { total, done, open: total - done, overdue };
-  }, [tasks]);
+  }, [todayTasks]);
 
   const upcoming = useMemo(() => {
-    return tasks
+    return todayTasks
       .filter((t) => !t.done)
       .sort((a, b) => {
         const da = parseDate(a.due);
@@ -37,7 +38,7 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
         return prioInfo(a.priority).weight - prioInfo(b.priority).weight;
       })
       .slice(0, 5);
-  }, [tasks]);
+  }, [todayTasks]);
 
   const todayLabel = useMemo(() => {
     const now = new Date();
@@ -54,7 +55,9 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
     <ScrollView contentContainerStyle={styles.screenContent}>
       <Text style={styles.h1}>Hallo Nadine 👋</Text>
       <Text style={styles.todayText}>{todayLabel}</Text>
-      <Text style={styles.subtitle}>Setze dir jeden Tag drei Habits oder Aufgaben, die du erledigen möchtest. </Text>
+      <Text style={styles.subtitle}>
+        Setze dir jeden Tag drei Habits oder Aufgaben, die du erledigen möchtest.
+      </Text>
 
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
@@ -72,9 +75,6 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
       </View>
 
       <DailyGoalCard doneCount={stats.done} totalCount={stats.total} dailyTarget={3} />
-
-      <View style={styles.statsRow}>
-      </View>
 
       <Text style={styles.h2}>Als Nächstes</Text>
       {upcoming.length === 0 ? (
@@ -97,8 +97,6 @@ export function HomeScreen({ tasks, onNew, onOpen, onToggle, onDelete, onShowAll
           <TaskRow key={t.id} task={t} onOpen={onOpen} onToggle={onToggle} onDelete={onDelete} />
         ))
       )}
-
-      
     </ScrollView>
   );
 }
