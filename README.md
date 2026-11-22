@@ -122,18 +122,16 @@ Bietet eine Übersicht über die Bedienung der App, technische Versionsinformati
 
 ---
 
----
-
 ## 7. Screenshots
 
-* <img src="daily3/bilder_readme/Startseite.jpeg" alt="Startseite" width="260" />
-* <img src="daily3/bilder_readme/Erstelluebersicht.jpeg" alt="Erstellübersicht" width="260" />
-* <img src="daily3/bilder_readme/Erstelluebersicht2.jpeg" alt="Erstellübersicht 2" width="260" />
-* <img src="daily3/bilder_readme/Einstellungen.jpeg" alt="Einstellungen" width="260" />
-* <img src="daily3/bilder_readme/Einstellungen2.jpeg" alt="Einstellungen 2" width="260" />
-* <img src="daily3/bilder_readme/Bearbeitungsuebersicht.jpeg" alt="Bearbeitungsübersicht" width="260" />
-* <img src="daily3/bilder_readme/Bearbeitungsuebersicht2.jpeg" alt="Bearbeitungsübersicht 2" width="260" />
-* <img src="daily3/bilder_readme/Aufgabenuebersicht.jpeg" alt="Aufgabenübersicht" width="260" />
+<img src="daily3/bilder_readme/Startseite.jpeg" alt="Startseite" width="260" />
+<img src="daily3/bilder_readme/Erstelluebersicht.jpeg" alt="Erstellübersicht" width="260" />
+<img src="daily3/bilder_readme/Erstelluebersicht2.jpeg" alt="Erstellübersicht 2" width="260" />
+<img src="daily3/bilder_readme/Einstellungen.jpeg" alt="Einstellungen" width="260" />
+<img src="daily3/bilder_readme/Einstellungen2.jpeg" alt="Einstellungen 2" width="260" />
+<img src="daily3/bilder_readme/Bearbeitungsuebersicht.jpeg" alt="Bearbeitungsübersicht" width="260" />
+<img src="daily3/bilder_readme/Bearbeitungsuebersicht2.jpeg" alt="Bearbeitungsübersicht 2" width="260" />
+<img src="daily3/bilder_readme/Aufgabenuebersicht.jpeg" alt="Aufgabenübersicht" width="260" />
 
 <!-- Die verwendeten Bilder und GIFs liegen im Ordner src/bilder -->
 
