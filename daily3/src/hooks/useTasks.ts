@@ -32,7 +32,7 @@ export function useTasks() {
 
         let parsed: Task[] = raw ? JSON.parse(raw) : [];
 
-        // Neuer Tag erkannt -> wiederkehrende Aufgaben wieder auf "Offen" setzen
+
         if (lastReset !== todayStr) {
           parsed = parsed.map((t) =>
             (t.repeatDays?.length ?? 0) > 0

@@ -3,7 +3,7 @@ import { COLORS } from '../constants/tasks';
 
 export const appStyles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
-  // KORRIGIERT: Einrückung von appBar vereinheitlicht
+  
   appBar: {
     backgroundColor: COLORS.primaryDark,
     paddingVertical: 12,
@@ -146,7 +146,7 @@ export const appStyles = StyleSheet.create({
     borderWidth: 3,
     borderColor: COLORS.card,
   },
-  // KORRIGIERT: Ungenutzten Style fabText entfernt
+  
 
   fabImage: {
     width: 30,
@@ -160,11 +160,10 @@ export const appStyles = StyleSheet.create({
     borderTopColor: COLORS.border,
   },
   tabItem: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 8 },
-  // KORRIGIERT: Ungenutzten Style tabIcon entfernt
   tabLabel: { fontSize: 17, color: COLORS.muted, fontWeight: '600' },
   tabLabelActive: { color: COLORS.primary, fontWeight: '700' },
 
-  // KORRIGIERT: Ungenutzte Stepper-Styles (repeatHeaderRow, stepperRow, stepperButton, stepperButtonText, stepperValue) entfernt
+  
   weekdayRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
