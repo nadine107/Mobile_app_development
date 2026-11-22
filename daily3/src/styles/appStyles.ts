@@ -89,10 +89,10 @@ appBar: {
   emptyBox: { padding: 24, alignItems: 'center' },
   emptyText: { color: COLORS.muted, fontSize: 14, textAlign: 'center' },
   emptyImage: {
-    width: 120,
-    height: 120,
-    marginBottom: 10,
-    borderRadius: 16,
+    width: 240,
+    height: 150,
+    marginBottom: 12,
+    borderRadius: 14,
   },
 
   listHeader: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8 },
@@ -153,8 +153,8 @@ appBar: {
   },
 
   fabImage: {
-    width: 26,
-    height: 26,
+    width: 30,
+    height: 30,
   },
 
   tabBar: {
@@ -167,4 +167,70 @@ appBar: {
   tabIcon: { fontSize: 20 },
   tabLabel: { fontSize: 17, color: COLORS.muted, fontWeight: '600' },
   tabLabelActive: { color: COLORS.primary, fontWeight: '700' },
+
+  repeatHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  stepperRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  stepperButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepperButtonText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  stepperValue: {
+    minWidth: 42,
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  weekdayRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 6,
+    marginBottom: 14,
+  },
+  weekdayCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  weekdayCircleActive: {
+    backgroundColor: '#EFE6F0',
+    borderColor: COLORS.primary,
+    borderWidth: 1.5,
+  },
+  weekdayText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: COLORS.muted,
+  },
+  weekdayTextActive: {
+    color: COLORS.primary,
+    fontWeight: '700',
+  },
 });

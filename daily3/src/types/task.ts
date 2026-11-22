@@ -4,14 +4,18 @@
 
 export type PriorityKey = 'hoch' | 'mittel' | 'tief';
 
+export type WeekdayKey = 'Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So';
+
 export interface Task {
   id: string;
   title: string;
   description: string;
-  priority: PriorityKey;
-  due: string;
+  priority: Priority;
+  dueDate: string | null;
   done: boolean;
-  createdAt: number;
+  createdAt: string;
+  repeatPerWeek?: number;      // z. B. 0 (einmalig) oder 1..7
+  repeatDays?: WeekdayKey[];   // z. B. ['Mo', 'Mi', 'Fr']
 }
 
 export interface PriorityConfig {

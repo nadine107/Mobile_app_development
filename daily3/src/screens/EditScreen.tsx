@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { Button } from '../components/Button';
 import { Chip } from '../components/Chip';
-import { COLORS, PRIORITIES } from '../constants/tasks';
+import { COLORS, PRIORITIES, WEEKDAYS } from '../constants/tasks';
 import { appStyles as styles } from '../styles/appStyles';
-import { PriorityKey, Task } from '../types/task';
+import { PriorityKey, Task, WeekdayKey } from '../types/task';
 import { formatDate, newId, parseDate, startOfToday } from '../utils/taskHelpers';
 
 interface EditScreenProps {
@@ -21,6 +29,8 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
   const [priority, setPriority] = useState<PriorityKey>(task?.priority ?? 'mittel');
   const [due, setDue] = useState(task?.due ?? '');
   const [done, setDone] = useState(task?.done ?? false);
+  const [repeatPerWeek, setRepeatPerWeek] = useState<number>(task?.repeatPerWeek ?? 0);
+  const [repeatDays, setRepeatDays] = useState<WeekdayKey[]>(task?.repeatDays ?? []);
   const [errors, setErrors] = useState<{ title?: string; due?: string }>({});
 
   useEffect(() => {
@@ -29,6 +39,8 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
     setPriority(task?.priority ?? 'mittel');
     setDue(task?.due ?? '');
     setDone(task?.done ?? false);
+    setRepeatPerWeek(task?.repeatPerWeek ?? 0);
+    setRepeatDays(task?.repeatDays ?? []);
     setErrors({});
   }, [task?.id]);
 
@@ -52,6 +64,8 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
       due: normalizedDue,
       done,
       createdAt: task?.createdAt ?? Date.now(),
+      repeatPerWeek,
+      repeatDays,
     });
   };
 
@@ -62,13 +76,23 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
     setErrors((e) => ({ ...e, due: undefined }));
   };
 
+  const toggleWeekday = (day: WeekdayKey) => {
+    setRepeatDays((prev) => {
+      const next = prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day];
+      if (next.length > repeatPerWeek) {
+        setRepeatPerWeek(next.length);
+      }
+      return next;
+    });
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.screenContent} keyboardShouldPersistTaps="handled">
-        <Text style={styles.h1}>{isNew ? 'Neue Pendenz' : 'Pendenz bearbeiten'}</Text>
+        <Text style={styles.h1}>{isNew ? 'Neue Aufgabe' : 'Aufgabe bearbeiten'}</Text>
 
         <Text style={styles.label}>Titel *</Text>
         <TextInput
@@ -119,6 +143,47 @@ export function EditScreen({ task, onSave, onDelete, onCancel }: EditScreenProps
           <Chip label="Morgen" onPress={() => setDueInDays(1)} />
           <Chip label="In 1 Woche" onPress={() => setDueInDays(7)} />
           <Chip label="Kein Datum" onPress={() => setDue('')} />
+        </View>
+
+        {/* Wie oft pro Woche? */}
+        <View style={styles.repeatHeaderRow}>
+          <Text style={styles.label}>Wie oft pro Woche?</Text>
+          <View style={styles.stepperRow}>
+            <Pressable
+              style={styles.stepperButton}
+              onPress={() => setRepeatPerWeek((prev) => Math.max(0, prev - 1))}
+            >
+              <Text style={styles.stepperButtonText}>−</Text>
+            </Pressable>
+
+            <Text style={styles.stepperValue}>
+              {repeatPerWeek === 0 ? '1' : `${repeatPerWeek}×`}
+            </Text>
+
+            <Pressable
+              style={styles.stepperButton}
+              onPress={() => setRepeatPerWeek((prev) => Math.min(7, prev + 1))}
+            >
+              <Text style={styles.stepperButtonText}>+</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* Wochentage */}
+        <Text style={styles.label}>Wochentage</Text>
+        <View style={styles.weekdayRow}>
+          {WEEKDAYS.map((day) => {
+            const selected = repeatDays.includes(day);
+            return (
+              <Pressable
+                key={day}
+                style={[styles.weekdayCircle, selected && styles.weekdayCircleActive]}
+                onPress={() => toggleWeekday(day)}
+              >
+                <Text style={[styles.weekdayText, selected && styles.weekdayTextActive]}>{day}</Text>
+              </Pressable>
+            );
+          })}
         </View>
 
         <Text style={styles.label}>Status</Text>

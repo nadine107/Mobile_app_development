@@ -128,7 +128,7 @@ export default function App() {
           onPress={goNew}
           >
           <Image
-            source={require('../../src/bilder/Plussymbol.jpeg')}
+            source={require('../../src/bilder/Plussymbol.png')}
             style={styles.fabImage}
             resizeMode="contain"
           />

@@ -41,3 +41,9 @@ export const TABS: TabItemConfig[] = [
   { key: 'list', label: 'Alle', icon: '' },
   { key: 'help', label: 'Einstellungen', icon: '' },
 ];
+
+import { WeekdayKey } from '../types/task';
+
+export const WEEKDAYS: WeekdayKey[] = [
+  'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'
+];
