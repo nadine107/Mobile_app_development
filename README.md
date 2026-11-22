@@ -1,9 +1,8 @@
 # Daily3 – Mobile App Development
 
-## 1. Projektübersicht
-
-### Projektidee
-**Daily3** ist eine mobile Aufgaben- und Habit-Tracking-App, die Nutzerinnen und Nutzer dabei unterstützt, täglich kleine Gewohnheiten und Aufgaben zu verfolgen. Der Fokus liegt auf Einfachheit und Motivation: Anstatt viele Aufgaben gleichzeitig zu verwalten, setzt sich die App das Tagesziel von **drei** erledigten Aufgaben oder Gewohnheiten. Natürlich können auch mehr als drei Aufgaben abgehakt werden – das Ziel von drei pro Tag dient als motivierender Rahmen ohne Überforderung.
+1. Projektübersicht
+Projektidee:
+Daily3 ist eine mobile Aufgaben- und Habit-Tracking-App, welche Nutzerinnen und Nutzer dabei unterstützt, täglich kleine Gewohnheiten und Aufgaben zu verfolgen. Der Fokus liegt auf Einfachheit und Motivation: Anstatt viele Aufgaben gleichzeitig zu verwalten, hilft die App, indem der Nutzer als Ziel des Tages drei Aufgaben oder Gewohnheiten abgehackt werden können (natürlich gehen auch mehrere Aufgaben. Als Ziel wären einfach drei pro Tag).
 
 ### Zielgruppe
 * Personen, die neue tägliche Gewohnheiten aufbauen möchten
@@ -52,87 +51,19 @@ cd daily3
 npm install
 npx expo install @react-native-async-storage/async-storage expo-constants react-native-safe-area-context
 npx expo start
-```
 
-### Projektstruktur
-```text
-daily3/
-├── src/
-│   ├── app/
-│   │   └── index.tsx
-│   ├── bilder/
-│   ├── components/
-│   │   ├── Button.tsx
-│   │   ├── Chip.tsx
-│   │   ├── DailyGoalCard.tsx
-│   │   └── TaskRow.tsx
-│   ├── constants/
-│   │   └── tasks.ts
-│   ├── hooks/
-│   │   └── useTasks.ts
-│   ├── screens/
-│   │   ├── EditScreen.tsx
-│   │   ├── HelpScreen.tsx
-│   │   ├── HomeScreen.tsx
-│   │   └── ListScreen.tsx
-│   ├── styles/
-│   │   └── appStyles.ts
-│   ├── types/
-│   │   └── task.ts
-│   └── utils/
-│       └── taskHelpers.ts
-└── package.json
-```
+Projektstruktur
+???
 
----
+4. Hauptfunktionen
+Startseite:
 
-## 4. Hauptfunktionen
 
-### Startseite (`Übersicht`)
-Auf der Startseite erhält die Nutzerin bzw. der Nutzer einen direkten Überblick über das aktuelle Datum, die Tagesstatistik (`Offen`, `Überfällig`, `Erledigt`), die `DailyGoalCard` mit dem Tagesziel von drei Aufgaben sowie die anstehenden Aufgaben unter **„Als Nächstes“**. Aufgaben lassen sich direkt abhaken, wodurch sich die Statistik sofort aktualisiert.
+Startseite: 
+Über die Startseite gelangt der Nutzer direkt zu all den wichtigen Funktionen der App. Er erhält auch direkt einen ersten Überblick über die Ziele, die heute anstehen. Diese können dabei direkt abgehackt und dementsprechend in der Statistik erfasst werden. 
 
-### Aufgabe / Gewohnheit hinzufügen & bearbeiten
-Über den `+`-Button (oder durch Antippen einer bestehenden Aufgabe) öffnet sich die Bearbeitungsansicht. Dort lassen sich Titel (Pflichtfeld mit Buchstaben-Validierung), Beschreibung, Priorität, Fälligkeitsdatum (inkl. Schnellauswahl wie *Heute*, *Morgen*, *In 1 Woche*), wiederholende Wochentage (`Mo`–`So`) sowie der Status festlegen. Gespeicherte Aufgaben werden lokal über `AsyncStorage` persistiert.
+Hinzufügen einer Gewohnheit: 
+Über diese Seite kann der User die neue Gewohnheit so bearbeiten wie er/sie möchte. Es gibt dabei unterschiedliche Kategorien, welche ausgewählt werden können und anders priorisiert werden. Jede neue Gewohnheit landet dann in einer erstellten Datenbank. 
 
-### Gesamtübersicht (`Alle`)
-Zeigt alle erfassten Aufgaben an und bietet eine Suchfunktion, Sortieroptionen (z. B. nach Fälligkeit, Priorität, Titel, Erfassungsdatum – jeweils auf- oder absteigend) sowie Filter nach Status. Durch Tippen wird eine Aufgabe bearbeitet, durch langes Drücken nach Rückfrage gelöscht.
-
-### Einstellungen & Hilfe
-Bietet eine Übersicht über die Bedienung der App, technische Versionsinformationen (App-Version, Expo SDK, Plattform, Anzahl gespeicherter Aufgaben) sowie die Möglichkeit, alle Aufgaben nach Bestätigung zurückzusetzen.
-
----
-
-## 5. Herausforderungen & Lösungen
-
-* **Wiederkehrende Aufgaben & Tageswechsel:** Im Verlauf der Entwicklung erneuerten sich erledigte Aufgaben am nächsten Tag nicht automatisch wieder als offen. Gelöst wurde das durch eine tägliche Datumsprüfung (`daily3_last_reset_date`) in Kombination mit `repeatDays` und `isTaskForToday`.
-* **Speicherschlüssel (`STORAGE_KEY`) beim Refactoring:** Durch das Auslagern in Konstanten fiel beim Umbenennen des Storage-Keys auf, dass bestehende Daten unter dem alten Schlüssel lagen. Ein einheitlicher, zentraler `STORAGE_KEY` verhindert künftig Konflikte.
-* **Eingabevalidierung für Aufgabentitel:** Reine Zahlen- oder Sonderzeichenketten sowie Zeichensalate ohne sinnvollen Buchstabenanteil werden in der Formularvalidierung abgefangen und mit einer klaren Fehlermeldung zurückgewiesen.
-* **Probleme mit Bild-Verlinkungen:** Relative Pfade sowie Leerzeichen in Ordnernamen führten bei der Einbindung von Bildern/Screenshots zunächst zu Darstellungsproblemen. Durch saubere relative Pfade (`daily3/bilder_readme/...`) und eindeutige Dateinamen lassen sich alle Bilder zuverlässig einbinden.
-* **Aufräumen von totem Code & alten Props:** Nach dem Refactoring und der Navigation über Tab-Bar und `+`-Button waren einzelne Props und Styles überflüssig und führten nach Anpassungen an den Screens zu TypeScript-Meldungen. Durch konsequentes Entfernen ungenutzter Teile läuft alles sauber und ohne Warnungen.
-
----
-
-## 6. Annahmen & Grenzen
-
-* Die Datenhaltung erfolgt rein lokal auf dem Gerät über `AsyncStorage`; es gibt aktuell keine Cloud-Synchronisation oder Benutzerkonten.
-* Das Tagesdatum und der tägliche Reset orientieren sich an der lokalen Gerätezeit.
-* Es werden aktuell keine Push-Benachrichtigungen oder Erinnerungen versendet.
-* Es gibt keine Timer- oder Stoppuhrfunktion
-* Es bietet sich keine Funktion mit anderen in Kontakt zu treten und sich z.B. über Fortschritt auszutauschen. Zudem lassen sich auch keine Daten austauschen. 
-
----
-
-## 7. Screenshots
-
-<img src="daily3/bilder_readme/Startseite.jpeg" alt="Startseite" width="260" />
-<img src="daily3/bilder_readme/Erstelluebersicht.jpeg" alt="Erstellübersicht" width="260" />
-<img src="daily3/bilder_readme/Erstelluebersicht2.jpeg" alt="Erstellübersicht 2" width="260" />
-<img src="daily3/bilder_readme/Einstellungen.jpeg" alt="Einstellungen" width="260" />
-<img src="daily3/bilder_readme/Einstellungen2.jpeg" alt="Einstellungen 2" width="260" />
-<img src="daily3/bilder_readme/Bearbeitungsuebersicht.jpeg" alt="Bearbeitungsübersicht" width="260" />
-<img src="daily3/bilder_readme/Bearbeitungsuebersicht2.jpeg" alt="Bearbeitungsübersicht 2" width="260" />
-<img src="daily3/bilder_readme/Aufgabenuebersicht.jpeg" alt="Aufgabenübersicht" width="260" />
-
-<!-- Die verwendeten Bilder und GIFs liegen im Ordner src/bilder -->
-
----
+Statistik-Seite: 
+Auf dieser erfährt der Nutzer, wie weit sein Fortschritt der Woche ist. Es zeigt eine Übersicht, wie viele Aufgaben schon erledigt wurden und wie viele pro Tag. Ausserdem verfügt die Seite noch über eine Wochenansicht. 
